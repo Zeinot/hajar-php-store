@@ -1,0 +1,10 @@
+[2025-06-02 22:39:34] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:39:38] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:39:42] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:40:08] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:40:19] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:40:34] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:41:23] [error]: Admin login error: Table 'elegant_drapes.admin_users' doesn't exist
+[2025-06-02 22:41:31] [info]: Registration attempt with email: dydezavab@mailinator.com
+[2025-06-02 22:41:31] [success]: User registered successfully: dydezavab@mailinator.com
+[2025-06-02 22:42:02] [error]: Login error: Table 'elegant_drapes.user_tokens' doesn't exist

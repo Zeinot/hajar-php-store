@@ -407,7 +407,13 @@ include 'partials/navbar.php';
                             <div class="card h-100 product-card">
                                 <a href="product-details.php?sku=<?php echo $product['sku']; ?>" class="text-decoration-none">
                                     <?php if (!empty($product['image'])): ?>
-                                        <img src="<?php echo SITE_URL . 'assets/uploads/products/' . $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+                                        <?php 
+                                        // Check if the image path already contains the uploads directory
+                                        $imagePath = strpos($product['image'], 'assets/uploads/products/') === 0 ?
+                                            SITE_URL . $product['image'] : 
+                                            SITE_URL . 'assets/uploads/products/' . $product['image'];
+                                        ?>
+                                        <img src="<?php echo $imagePath; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
                                     <?php else: ?>
                                         <img src="https://via.placeholder.com/300x300?text=No+Image" class="card-img-top" alt="No image available">
                                     <?php endif; ?>

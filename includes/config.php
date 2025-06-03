@@ -19,10 +19,12 @@ define('ROOT_PATH', realpath(dirname(__FILE__) . '/../'));
 define('UPLOAD_PRODUCT_PATH', ROOT_PATH . '/assets/uploads/products/');
 define('UPLOAD_CATEGORY_PATH', ROOT_PATH . '/assets/uploads/categories/');
 
-// Session settings
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 0); // Set to 1 in production with HTTPS
+// Session settings - only apply if session hasn't started yet
+if (session_status() == PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', 0); // Set to 1 in production with HTTPS
+}
 
 // Error reporting (disable in production)
 error_reporting(E_ALL);

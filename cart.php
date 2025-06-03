@@ -88,7 +88,13 @@ include 'partials/navbar.php';
                     <div class="row align-items-center">
                         <div class="col-md-2 col-sm-3 text-center mb-3 mb-md-0">
                             <?php if (!empty($item['image'])): ?>
-                                <img src="<?php echo SITE_URL . 'assets/uploads/products/' . $item['image']; ?>" alt="<?php echo $item['name']; ?>" class="img-fluid rounded">
+                                <?php 
+                                // Check if the image path already contains the uploads directory
+                                $imagePath = strpos($item['image'], 'assets/uploads/products/') === 0 ?
+                                    SITE_URL . $item['image'] : 
+                                    SITE_URL . 'assets/uploads/products/' . $item['image'];
+                                ?>
+                                <img src="<?php echo $imagePath; ?>" alt="<?php echo $item['name']; ?>" class="img-fluid rounded">
                             <?php else: ?>
                                 <img src="https://via.placeholder.com/80x80?text=No+Image" alt="No image available" class="img-fluid rounded">
                             <?php endif; ?>

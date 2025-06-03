@@ -257,3 +257,75 @@ function updateProfile($userId, $fullName, $phone = null, $address = null) {
         return false;
     }
 }
+
+/**
+ * Check if user is logged in
+ * 
+ * @return bool True if user is logged in, false otherwise
+ */
+if (!function_exists('isLoggedIn')) {
+    function isLoggedIn() {
+        // Start session if not already started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    }
+}
+
+/**
+ * Check if current user is an admin
+ * 
+ * @return bool True if user is an admin, false otherwise
+ */
+if (!function_exists('isAdmin')) {
+    function isAdmin() {
+        // Start session if not already started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+    }
+}
+
+/**
+ * Ensure user is authenticated or redirect to login page
+ * 
+ * @param string $redirect_url URL to redirect to if not authenticated (default: login.php)
+ * @return void
+ */
+if (!function_exists('ensureAuthenticated')) {
+    function ensureAuthenticated($redirect_url = '../login.php') {
+        if (!isLoggedIn()) {
+            // Set flash message
+            $_SESSION['flash_message'] = 'Please log in to access this page.';
+            $_SESSION['flash_type'] = 'warning';
+            
+            // Redirect to login page
+            header("Location: $redirect_url");
+            exit;
+        }
+    }
+}
+
+/**
+ * Ensure user is authenticated as admin or redirect to login page
+ * 
+ * @param string $redirect_url URL to redirect to if not authenticated as admin (default: ../login.php)
+ * @return void
+ */
+if (!function_exists('ensureAdminAuthenticated')) {
+    function ensureAdminAuthenticated($redirect_url = '../login.php') {
+        if (!isLoggedIn() || !isAdmin()) {
+            // Set flash message
+            $_SESSION['flash_message'] = 'You must be logged in as an administrator to access this page.';
+            $_SESSION['flash_type'] = 'danger';
+            
+            // Redirect to login page
+            header("Location: $redirect_url");
+            exit;
+        }
+    }
+}

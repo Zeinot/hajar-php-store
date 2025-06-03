@@ -172,7 +172,13 @@ include 'partials/navbar.php';
         <div class="col-md-6 mb-4">
             <div class="product-image-container text-center mb-3">
                 <?php if (!empty($images)): ?>
-                    <img src="<?php echo SITE_URL . 'assets/uploads/products/' . $images[0]['image_path']; ?>" alt="<?php echo $product['name']; ?>" class="img-fluid product-main-image">
+                    <?php 
+                    // Check if the image path already contains the uploads directory
+                    $imagePath = strpos($images[0]['image_path'], 'assets/uploads/products/') === 0 ?
+                        SITE_URL . $images[0]['image_path'] : 
+                        SITE_URL . 'assets/uploads/products/' . $images[0]['image_path'];
+                    ?>
+                    <img src="<?php echo $imagePath; ?>" alt="<?php echo $product['name']; ?>" class="img-fluid product-main-image">
                 <?php else: ?>
                     <img src="https://via.placeholder.com/600x600?text=No+Image" alt="No image available" class="img-fluid product-main-image">
                 <?php endif; ?>
@@ -182,7 +188,13 @@ include 'partials/navbar.php';
                 <div class="row product-image-gallery g-2">
                     <?php foreach ($images as $index => $image): ?>
                         <div class="col-3">
-                            <img src="<?php echo SITE_URL . 'assets/uploads/products/' . $image['image_path']; ?>" 
+                            <?php 
+                            // Check if the image path already contains the uploads directory
+                            $thumbPath = strpos($image['image_path'], 'assets/uploads/products/') === 0 ?
+                                SITE_URL . $image['image_path'] : 
+                                SITE_URL . 'assets/uploads/products/' . $image['image_path'];
+                            ?>
+                            <img src="<?php echo $thumbPath; ?>" 
                                  alt="<?php echo $product['name'] . ' image ' . ($index + 1); ?>" 
                                  class="img-fluid img-thumbnail <?php echo $index === 0 ? 'border border-primary' : ''; ?>"
                                  onclick="changeMainImage(this.src)">

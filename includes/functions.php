@@ -250,6 +250,75 @@ function getCartTotal() {
 }
 
 /**
+ * Add item to cart
+ * 
+ * @param string $productSku Product SKU
+ * @param int $quantity Quantity to add
+ * @param string|null $size Product size (optional)
+ * @param string|null $color Product color (optional)
+ * @return bool Success status
+ */
+function addToCart($productSku, $quantity, $size = null, $color = null) {
+    // Start session if not already started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Initialize cart if not set
+    if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+    
+    // Get product price from database
+    $db = Database::getInstance();
+    $stmt = $db->prepare("SELECT price FROM products WHERE sku = ?");
+    $stmt->bind_param('s', $productSku);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if (!$result || $result->num_rows === 0) {
+        logActivity("Failed to add item to cart: Product not found (SKU: $productSku)", 'error', ROOT_PATH . '/logs/cart_errors.log');
+        return false;
+    }
+    
+    $product = $result->fetch_assoc();
+    $price = $product['price'];
+    
+    // Check if item already exists in cart
+    $found = false;
+    $itemId = null;
+    
+    foreach ($_SESSION['cart'] as $index => $item) {
+        if ($item['product_sku'] === $productSku && 
+            $item['size'] === $size && 
+            $item['color'] === $color) {
+            // Update quantity if item already exists
+            $_SESSION['cart'][$index]['quantity'] += $quantity;
+            $found = true;
+            $itemId = $index;
+            break;
+        }
+    }
+    
+    // Add new item if not found
+    if (!$found) {
+        $itemId = uniqid('cart_');
+        $_SESSION['cart'][] = [
+            'id' => $itemId,
+            'product_sku' => $productSku,
+            'quantity' => $quantity,
+            'size' => $size,
+            'color' => $color,
+            'price' => $price,
+            'added_at' => time()
+        ];
+    }
+    
+    logActivity("Item added to cart: $productSku (Qty: $quantity, Size: $size, Color: $color)", 'info', ROOT_PATH . '/logs/cart.log');
+    return true;
+}
+
+/**
  * Display flash message
  * 
  * @param string $message Message to display

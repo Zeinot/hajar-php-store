@@ -319,6 +319,42 @@ function addToCart($productSku, $quantity, $size = null, $color = null) {
 }
 
 /**
+ * Remove item from cart
+ * 
+ * @param string $itemId Item ID to remove
+ * @return bool Success status
+ */
+function removeFromCart($itemId) {
+    // Start session if not already started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Check if cart exists
+    if (!isset($_SESSION['cart']) || !is_array($_SESSION['cart'])) {
+        return false;
+    }
+    
+    // Find and remove the item
+    foreach ($_SESSION['cart'] as $index => $item) {
+        if (isset($item['id']) && $item['id'] === $itemId) {
+            // Log before removing
+            logActivity("Item removed from cart: {$item['product_sku']} (Qty: {$item['quantity']})", 'info', ROOT_PATH . '/logs/cart.log');
+            
+            // Remove item
+            unset($_SESSION['cart'][$index]);
+            
+            // Reindex array
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
+            
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+/**
  * Display flash message
  * 
  * @param string $message Message to display

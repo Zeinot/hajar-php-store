@@ -15,6 +15,11 @@ if (session_status() === PHP_SESSION_NONE) {
 // Set content type to JSON
 header('Content-Type: application/json');
 
+// Enable error reporting for debugging
+// Comment these out in production
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Don't display errors in the output
+
 // Initialize the response array
 $response = [
     'status' => 'error',
@@ -27,7 +32,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 $action = isset($_GET['action']) ? $_GET['action'] : null;
 
 // Log the request for debugging
-logMessage('Cart API Request: ' . $method . ' ' . $action . ' - ' . json_encode($_POST), 'cart_api.log');
+logActivity('Cart API Request: ' . $method . ' ' . $action . ' - ' . json_encode($_POST), 'cart_api.log');
 
 // Get database instance
 $db = Database::getInstance();
@@ -353,7 +358,7 @@ try {
     ];
     
     // Log error
-    logMessage('Cart API Error: ' . $e->getMessage(), 'cart_api_errors.log');
+    logActivity('Cart API Error: ' . $e->getMessage(), 'error', ROOT_PATH . '/logs/cart_api_errors.log');
 }
 
 // Return JSON response

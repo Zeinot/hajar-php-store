@@ -431,14 +431,9 @@ include 'partials/navbar.php';
                                 </div>
                                 <div class="card-footer bg-white border-top-0">
                                     <div class="d-grid gap-2">
-                                        <a href="product-details.php?sku=<?php echo $product['sku']; ?>" class="btn btn-outline-primary">View Details</a>
-                                        <form action="api/cart.php?action=add" method="POST" class="add-to-cart-form">
-                                            <input type="hidden" name="product_sku" value="<?php echo $product['sku']; ?>">
-                                            <input type="hidden" name="quantity" value="1">
-                                            <button type="submit" class="btn btn-primary w-100">
-                                                <i class="fas fa-shopping-cart"></i> Add to Cart
-                                            </button>
-                                        </form>
+                                        <a href="product-details.php?sku=<?php echo $product['sku']; ?>" class="btn btn-primary w-100">
+                                            <i class="fas fa-eye me-1"></i> View Details
+                                        </a>
                                     </div>
                                 </div>
                             </div>
